@@ -25,7 +25,7 @@ const Form = ({formTitle, formDesc}) => {
     };
     
   return (
-    <form className="flex flex-col gap-4 py-20 px-32 border-slate-200 border-4 rounded-xl shadow-md">
+    <form className="flex flex-col gap-4 py-20 px-32 border-gray-200 border rounded-xl shadow-md">
       <div className="text-center flex flex-col gap-2">
         <h1 className="text-3xl font-bold text-blue-600">{formTitle}</h1>
         <p className="text-sm from-neutral-400">{formDesc}</p>
