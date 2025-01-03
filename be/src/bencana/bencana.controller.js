@@ -9,7 +9,11 @@ router.get("/disasters", authMiddleware, async (req, res) => {
     const { userId } = req.user;
     try {
         const disasters = await getAllDisaster(userId);
-        res.json(disasters);
+        res.status(200).json({
+            status: "success",
+            message: "Disasters retrieved successfully",
+            data: disasters
+        });
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ message: error.message });
@@ -23,7 +27,11 @@ router.post("/disasters", authMiddleware, async (req, res) => {
 
     try {
         const disaster = await createDisaster(newDisasterData, userId);
-        res.json(disaster);
+        res.status(201).json({
+            status: "success",
+            message: "Disasters created successfully",
+            data: disaster
+        });
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ message: error.message });
@@ -36,7 +44,11 @@ router.get("/disasters/:id", authMiddleware, async (req, res) => {
     const { userId } = req.user;
     try {
         const disaster = await getDisasterById(parseInt(id), userId);
-        res.status(200).json(disaster);
+        res.status(200).json({
+            status: "success",
+            message: "Disasters retrieved successfully",
+            data: disaster
+        });
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ message: error.message });
@@ -65,7 +77,11 @@ router.put("/disasters/:id", authMiddleware, async (req, res) => {
         }
 
         // Jika update berhasil
-        res.status(200).json({ disaster, message: "Disaster updated successfully" });
+        res.status(200).json({
+            status: "success",
+            message: "Disasters edited successfully",
+            data: disaster
+        });
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ message: error.message });
@@ -77,8 +93,8 @@ router.delete("/disasters/:id", authMiddleware, async (req, res) => {
     const { id } = req.params;
     const { userId } = req.user;
     try {
-        const disaster = await deleteDisaster(parseInt(id), userId);
-        res.status(200).json({ disaster, message: "Disaster deleted successfully" });
+        await deleteDisaster(parseInt(id), userId);
+        res.status(200).json({ message: "Disaster deleted successfully" });
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ message: error.message });
