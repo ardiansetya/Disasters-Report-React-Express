@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int       @id @default(autoincrement())
+  name     String
+  email    String    @unique
+  password String
+  reports  Report[]  // Relasi dengan tabel laporan
+  refreshTokens RefreshToken[]
+  createdAt   DateTime        @default(now())
+}
+
+model RefreshToken {
+  id          Int      @id @default(autoincrement())
+  token       String   @unique
+  expiresAt   DateTime
+  revoked     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+   userId      Int
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Report {
+  id           Int      @id @default(autoincrement())
+  reporterName String    // Nama pelapor
+  location     String    // Lokasi kejadian
+  disasterType String    // Jenis bencana
+  description  String    // Deskripsi kejadian
+  date         DateTime  // Tanggal kejadian
+  createdAt    DateTime  @default(now()) // Waktu laporan dibuat
+
+  userId       Int
+  user         User      @relation(fields: [userId], references: [id])
+}
