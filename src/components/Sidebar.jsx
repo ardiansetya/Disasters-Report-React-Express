@@ -12,7 +12,7 @@ const Sidebar = () => {
     navigate("/");
   };
   return (
-    <aside className=" w-64 min-h-screen  bg-slate-800 text-white flex flex-col rounded-br-xl">
+    <aside className=" w-64 min-h-screen  bg-slate-500 text-white flex flex-col rounded-br-xl">
       <div className="sticky top-5">
         <div className="p-12 ">
           <h1 className="sm:text-3xl lg:text-2xl font-bold">Pelaporan Bencana</h1>
@@ -26,7 +26,7 @@ const Sidebar = () => {
           <a
             href="#"
             className="hover:bg-gray-700 px-4 py-2 rounded-md transition">
-            Lapor
+            Laporan
           </a>
           <a
             href="#"
