@@ -47,12 +47,12 @@ router.get("/disasters/:id", authMiddleware, async (req, res) => {
 router.put("/disasters/:id", authMiddleware, async (req, res) => {
     const newDisasterData = req.body;
     const { id } = req.params;
-    const { userId } = req.user; // Mendapatkan userId dari middleware
+    const { userId } = req.user; 
 
     console.log(id, userId);
 
     // Validasi input
-    if (!newDisasterData.title || !newDisasterData.location || !newDisasterData.description || !newDisasterData.date) {
+    if (!newDisasterData.reporterName || !newDisasterData.location || !newDisasterData.disasterType || !newDisasterData.description || !newDisasterData.date) {
         return res.status(422).json({ message: "Missing required fields" });
     }
 

@@ -4,7 +4,7 @@ import authRouter from "./auth/auth.controller.js"
 import bencanaRouter from "./bencana/bencana.controller.js"
 
 configDotenv();
-const port = process.env.PORT || 3000; // Gunakan default jika PORT tidak diatur
+const port = process.env.PORT || 3000;
 
 const app = express();
 app.use(express.json());

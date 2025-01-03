@@ -22,7 +22,7 @@ export const createDisaster = async (newDisasterData, userId) => {
 
 export const editDisaster = async (id, newDisasterData, userId) => {
     // Validasi untuk memastikan data yang diperlukan ada
-    if (!newDisasterData.title || !newDisasterData.location || !newDisasterData.description || !newDisasterData.date) {
+    if (!newDisasterData.reporterName || !newDisasterData.disasterType || !newDisasterData.location || !newDisasterData.description || !newDisasterData.date) {
         throw new Error('Missing required fields');
     }
 
