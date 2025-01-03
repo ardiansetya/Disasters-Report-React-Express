@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {login} from "../redux/CreateSlice.js"
+import { useDispatch } from "react-redux";
+import { login } from "../redux/CreateSlice.js";
 import Button from "./Button";
 import axiosInstance from "../axios/AxiosInstance";
+import { useNavigate } from "react-router-dom";
 
 const FormAuth = ({ formTitle, formDesc }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.user);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -33,8 +34,20 @@ const FormAuth = ({ formTitle, formDesc }) => {
       const response = await axiosInstance.post("/login", formData);
       const { user, token } = response.data;
 
-      // Simpan data user ke Redux
+      // Simpan token dan data user ke dalam Redux state (di memory)
       dispatch(login({ user, token }));
+
+      // Simpan token ke dalam localStorage
+      localStorage.setItem("authToken", token);
+
+      // Jika login berhasil, reset form
+      setFormData({
+        email: "",
+        password: "",
+      });
+
+      // Redirect ke halaman dashboard setelah berhasil login
+      navigate("/dashboard");
       console.log("Login successful:", response.data);
     } catch (err) {
       console.error(
@@ -53,7 +66,7 @@ const FormAuth = ({ formTitle, formDesc }) => {
     if (formTitle === "Welcome!") {
       return (
         <p className="text-center text-sm">
-          Don't have any account?{" "}
+          Don't have an account?{" "}
           <a href="/register" className="hover:text-blue-600 font-bold">
             Register Here!
           </a>

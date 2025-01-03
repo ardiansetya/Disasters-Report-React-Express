@@ -1,5 +1,6 @@
 
 import FormContent from "./FormContent";
+import TableData from "./TableData";
 
 const Content = () => {
   return (
@@ -11,6 +12,7 @@ const Content = () => {
       </div>
       <div className="w-full max-w-5xl">
         <FormContent />
+        <TableData/>
       </div>
     </div>
   );
