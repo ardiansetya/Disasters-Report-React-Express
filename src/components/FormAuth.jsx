@@ -1,7 +1,7 @@
 import React from 'react'
 import Button from './Button';
 
-const Form = ({formTitle, formDesc}) => {
+const FormAuth = ({formTitle, formDesc}) => {
     const pLoginRegister = (formTitle) => {
       if (formTitle === "Welcome!") {
         return (
@@ -26,7 +26,7 @@ const Form = ({formTitle, formDesc}) => {
     
   return (
     <form className="flex flex-col gap-4 py-20 px-32 border-gray-200 border rounded-xl shadow-md">
-      <div className="text-center flex flex-col gap-2">
+      <div className="text-center flex flex-col gap-2 w-full max-w-lg ">
         <h1 className="text-3xl font-bold text-blue-600">{formTitle}</h1>
         <p className="text-sm from-neutral-400">{formDesc}</p>
       </div>
@@ -55,9 +55,11 @@ const Form = ({formTitle, formDesc}) => {
 
       {pLoginRegister(formTitle)}
 
-      <Button type='submit' variant="primary">Login</Button>
+      <Button type="submit" variant="primary">
+        Login
+      </Button>
     </form>
   );
 }
 
-export default Form
+export default FormAuth;

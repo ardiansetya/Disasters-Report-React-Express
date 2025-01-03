@@ -15,7 +15,7 @@ const Sidebar = () => {
     <aside className=" w-64 min-h-screen  bg-slate-500 text-white flex flex-col rounded-br-xl">
       <div className="sticky top-5">
         <div className="p-12 ">
-          <h1 className="sm:text-3xl lg:text-2xl font-bold">Pelaporan Bencana</h1>
+          <h1 className="sm:text-3xl lg:text-2xl font-bold">Bencanalert!</h1>
         </div>
         <nav className="flex flex-col gap-4 px-4">
           <a
