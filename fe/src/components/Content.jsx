@@ -1,5 +1,4 @@
-import React from "react";
-import Button from "./Button";
+
 import FormContent from "./FormContent";
 
 const Content = () => {
