@@ -35,6 +35,9 @@ const TableData = () => {
               #
             </th>
             <th className="py-2 px-4 text-left text-sm font-medium text-gray-600">
+              Nama Pelapor
+            </th>
+            <th className="py-2 px-4 text-left text-sm font-medium text-gray-600">
               Jenis Bencana
             </th>
             <th className="py-2 px-4 text-left text-sm font-medium text-gray-600">
@@ -52,9 +55,10 @@ const TableData = () => {
           </tr>
         </thead>
         <tbody>
-          {data.map((item, index) => (
+          {data.data.map((item, index) => (
             <tr key={item.id} className="border-b hover:bg-gray-50">
               <td className="py-2 px-4 text-sm text-gray-800">{index + 1}</td>
+              <td className="py-2 px-4 text-sm text-gray-800">{item.reporterName}</td>
               <td className="py-2 px-4 text-sm text-gray-800">
                 {item.disasterType}
               </td>
