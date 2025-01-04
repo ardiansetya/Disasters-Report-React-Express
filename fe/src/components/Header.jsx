@@ -2,7 +2,6 @@ import { useSelector } from "react-redux";
 
 const Header = () => {
   const {name} = useSelector((state) => state.user.user);
-  console.log(name)
 
   return (
     <div className="sticky top-0 mx-5 ">
