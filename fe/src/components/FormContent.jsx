@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "./Button";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchData, postData } from "../redux/CreateSlice";
+import {  postData } from "../redux/CreateSlice";
 
 const FormContent = () => {
   const { data, loading, message } = useSelector((state) => state.user);
@@ -37,15 +37,13 @@ const FormContent = () => {
       });
 
       console.log("Data Created successfully:", data);
+      window.location.reload();
     } catch (err) {
       console.error("Error:", err.response?.data?.message || err.message);
       
     }
   };
 
-  useEffect(() => {
-    dispatch(fetchData());
-  }, [dispatch]);
 
   // const fetchData = async () => {
   //   try {
