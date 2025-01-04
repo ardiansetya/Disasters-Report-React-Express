@@ -25,14 +25,17 @@ const FormRegisterAuth = ({ formTitle, formDesc }) => {
   };
 
   const handleSubmit = async (e) => {
-    try {
-      e.preventDefault();
-      dispatch(register(formData));
-      navigate("/login");
-    } catch (error) {
-      console.log(error);
-    }
-    
+     e.preventDefault(); // Mencegah perilaku default form
+        try {
+          const resultAction = await dispatch(register(formData));
+          if (register.fulfilled.match(resultAction)) {
+            navigate("/login");
+          } else {
+            console.error(resultAction.payload || "register failed.");
+          }
+        } catch (error) {
+          console.error("Unexpected error:", error);
+        }
   };
 
 
