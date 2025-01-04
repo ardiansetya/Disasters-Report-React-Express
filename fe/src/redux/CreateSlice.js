@@ -1,117 +1,135 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance from "../axios/AxiosInstance";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
     user: '',
     token: '',
     data: [],
     loading: false,
-    message: '',
+    message: "",
 };
 
-export const login = createAsyncThunk("user/login", async (credentials) => {
+
+// Thunks
+export const login = createAsyncThunk("user/login", async (credentials, { rejectWithValue }) => {
+
     try {
         const response = await axiosInstance.post("/login", credentials);
+        localStorage.setItem("authToken", response.data.token);
+
         return response.data;
     } catch (err) {
-        const errorMessage =
-            err.response?.data?.message || "Failed to login.";
-        throw new Error(errorMessage);
+        return rejectWithValue(
+            err.response?.data?.message || "Failed to login."
+        );
     }
 });
 
-export const register = createAsyncThunk("user/register", async (credentials) => {
+export const register = createAsyncThunk("user/register", async (credentials, { rejectWithValue }) => {
     try {
         const response = await axiosInstance.post("/register", credentials);
-        console.log(response)
         return response.data;
     } catch (err) {
-        const errorMessage =
-            err.response?.data?.message || "Failed to login.";
-        throw new Error(errorMessage);
+        return rejectWithValue(
+            err.response?.data?.message || "Failed to register."
+        );
     }
-})
+});
 
-export const fetchData = createAsyncThunk("user/fetchData", async () => {
+export const fetchData = createAsyncThunk("user/fetchData", async (_, { rejectWithValue }) => {
     try {
         const response = await axiosInstance.get("/disasters");
         return response.data;
     } catch (err) {
-        const errorMessage =
-            err.response?.data?.message || "Failed to fetch data.";
-        throw new Error(errorMessage);
+        return rejectWithValue(
+            err.response?.data?.message || "Failed to fetch data."
+        );
     }
 });
 
-export const UserSlice = createSlice({
+export const postData = createAsyncThunk("user/postData", async (formData, { rejectWithValue }) => {
+    try {
+        const formattedData = {
+            ...formData,
+            date: new Date(formData.date).toISOString(),
+        };
+        const response = await axiosInstance.post("/disasters", formattedData);
+        return response.data;
+    } catch (err) {
+        return rejectWithValue(
+            err.response?.data?.message || "Failed to post data."
+        );
+    }
+});
+
+// Slice
+const UserSlice = createSlice({
     name: "user",
     initialState,
-    reducers: {
-        login: (state, action) => {
-            state.user = action.payload.user;
-            state.token = action.payload.token;
-        },
-        setData: (state, action) => {
-            state.data = action.payload
-        },
-        logout: (state) => {
-            state.user = null;
-            state.token = null;
-        }
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
-        // register
+            // Login
             .addCase(login.pending, (state) => {
                 state.loading = true;
-                state.message = '';
+                state.message = "";
             })
             .addCase(login.fulfilled, (state, action) => {
                 state.loading = false;
                 state.user = action.payload.user;
                 state.token = action.payload.token;
-                state.message = action.payload.message;
+                state.message = "Login successful.";
             })
             .addCase(login.rejected, (state, action) => {
                 state.loading = false;
-                state.user = null;
-                state.token = null;
-                state.message = action.payload.message;
+                state.message = action.payload || "Failed to login.";
             })
-            // register
+            // Register
             .addCase(register.pending, (state) => {
                 state.loading = true;
-                state.message = '';
+                state.message = "";
             })
             .addCase(register.fulfilled, (state, action) => {
                 state.loading = false;
                 state.user = action.payload.user;
                 state.token = action.payload.token;
-                state.message = action.payload.message;
+                state.message = "Registration successful.";
             })
             .addCase(register.rejected, (state, action) => {
                 state.loading = false;
-                state.user = null;
-                state.token = null;
-                state.message = action.payload.message;
+                state.message = action.payload || "Failed to register.";
             })
-            // fetch data
+            // Fetch Data
             .addCase(fetchData.pending, (state) => {
-                state.message = '';
+                state.loading = true;
+                state.message = "";
             })
             .addCase(fetchData.fulfilled, (state, action) => {
                 state.loading = false;
                 state.data = action.payload.data;
-                state.message = action.payload.message
+                state.message = "Data fetched successfully.";
             })
             .addCase(fetchData.rejected, (state, action) => {
                 state.loading = false;
                 state.data = [];
-                state.message = action.payload.message;
+                state.message = action.payload || "Failed to fetch data.";
+            })
+            // Post Data
+            .addCase(postData.pending, (state) => {
+                state.loading = true;
+                state.message = "";
+            })
+            .addCase(postData.fulfilled, (state, action) => {
+                state.loading = false;
+                state.data = [...state.data, action.payload];
+                state.message = "Data posted successfully.";
+            })
+            .addCase(postData.rejected, (state, action) => {
+                state.loading = false;
+                state.message = action.payload || "Failed to post data.";
             });
-    }
+    },
 });
 
-export default UserSlice
-
-export const {  logout, setData } = UserSlice.actions;
+export default UserSlice;

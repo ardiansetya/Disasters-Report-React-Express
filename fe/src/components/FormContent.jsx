@@ -1,23 +1,19 @@
-import {   useState } from "react";
-import axiosInstance from "../axios/AxiosInstance";
+import { useEffect, useState } from "react";
 import Button from "./Button";
 import { useDispatch, useSelector } from "react-redux";
-import {setData} from "../redux/CreateSlice"
+import { fetchData, postData } from "../redux/CreateSlice";
 
 const FormContent = () => {
-  const {data} = useSelector((state) => state.user)
-  
-  const dispatch = useDispatch()
+  const { data, loading, message } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     reporterName: "",
     location: "",
     disasterType: "",
     description: "",
-    date: "", 
+    date: "",
   });
-
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,20 +24,9 @@ const FormContent = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-
     try {
-      const formatedData = {
-        ...formData,
-        date: new Date(formData.date).toISOString(),
-      }
-
-      const response = await axiosInstance.post("/disasters", formatedData);
-      const data = response.data;
-     
-      console.log(data)
+      e.preventDefault();
+      dispatch(postData(formData));
 
       setFormData({
         reporterName: "",
@@ -51,34 +36,30 @@ const FormContent = () => {
         date: "",
       });
 
-      fetchData();
-
-      console.log("Data Created successfully:", response.data);
+      console.log("Data Created successfully:", data);
     } catch (err) {
       console.error("Error:", err.response?.data?.message || err.message);
-      setError(
-        err.response?.data?.message ||
-          "Failed to report disaster. Please try again."
-      );
-    } finally {
-      setLoading(false);
+      
     }
   };
 
-  const fetchData = async () => {
-    try {
-      const response = await axiosInstance.get("/disasters"); 
-      setFormData(response.data); // Sesuaikan struktur data
-      dispatch(setData(response.data))
-      console.log(data);
-    } catch (err) {
-      console.log(err);
-      setError("Failed to fetch data");
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+    dispatch(fetchData());
+  }, [dispatch]);
 
+  // const fetchData = async () => {
+  //   try {
+  //     const response = await axiosInstance.get("/disasters");
+  //     setFormData(response.data); // Sesuaikan struktur data
+  //     dispatch(setData(response.data))
+  //     console.log(data);
+  //   } catch (err) {
+  //     console.log(err);
+  //     setError("Failed to fetch data");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <div className="flex justify-center items-center">
@@ -184,7 +165,7 @@ const FormContent = () => {
         </div>
 
         {/* Menampilkan error jika ada */}
-        {error && <p className="text-red-600 text-center mt-4">{error}</p>}
+        {message && <p className="text-red-600 text-center mt-4">{message}</p>}
       </form>
     </div>
   );

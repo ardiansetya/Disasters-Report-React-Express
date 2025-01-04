@@ -25,18 +25,18 @@ const FormLoginAuth = ({ formTitle, formDesc }) => {
   };
 
   const handleSubmit = async (e) => {
+    e.preventDefault(); // Mencegah perilaku default form
     try {
-      e.preventDefault();
-      dispatch(login(formData));
-      if (token) {
-        localStorage.setItem("authToken", token);
+      const resultAction = await dispatch(login(formData));
+      if (login.fulfilled.match(resultAction)) {
+        navigate("/dashboard");
+      } else {
+    
+        console.error(resultAction.payload || "Login failed.");
       }
-      navigate("/dashboard");
     } catch (error) {
-      console.log(error);
+      console.error("Unexpected error:", error);
     }
-
-   
   };
 
   return (

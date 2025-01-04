@@ -25,8 +25,8 @@ const FormRegisterAuth = ({ formTitle, formDesc }) => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
     try {
+      e.preventDefault();
       dispatch(register(formData));
       navigate("/login");
     } catch (error) {
