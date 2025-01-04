@@ -62,6 +62,32 @@ export const postData = createAsyncThunk("user/postData", async (formData, { rej
     }
 });
 
+export const editData = createAsyncThunk("user/editData", async ({ id, formData }, { rejectWithValue }) => {
+    try {
+        const formattedData = {
+            ...formData,
+            date: new Date(formData.date).toISOString(),
+        };
+        const response = await axiosInstance.put(`/disasters/${id}`, formattedData);
+        return response.data;
+    } catch (err) {
+        return rejectWithValue(
+            err.response?.data?.message || "Failed to edit data."
+        );
+    }
+});
+
+export const deleteData = createAsyncThunk("user/deleteData", async (id, { rejectWithValue }) => {
+    try {
+        const response = await axiosInstance.delete(`/disasters/${id}`);
+        return response.data;
+    } catch (err) {
+        return rejectWithValue(
+            err.response?.data?.message || "Failed to delete data."
+        );
+    }
+});
+
 // Slice
 const UserSlice = createSlice({
     name: "user",
@@ -127,7 +153,41 @@ const UserSlice = createSlice({
             .addCase(postData.rejected, (state, action) => {
                 state.loading = false;
                 state.message = action.payload || "Failed to post data.";
-            });
+            })
+            // Edit Data
+            .addCase(editData.pending, (state) => {
+                state.loading = true;
+                state.message = "";
+            })
+            .addCase(editData.fulfilled, (state, action) => {
+                state.loading = false;
+                state.data = state.data.map((item) => {
+                    if (item.id === action.payload.id) {
+                        return action.payload;
+                    }
+                    return item;
+                });
+                state.message = "Data edited successfully.";
+            })
+            .addCase(editData.rejected, (state, action) => {
+                state.loading = false;
+                state.message = action.payload || "Failed to edit data.";
+            })
+            // Delete Data
+            .addCase(deleteData.pending, (state) => {
+                state.loading = true;
+                state.message = "";
+            })
+            .addCase(deleteData.fulfilled, (state, action) => {
+                state.loading = false;
+                state.data = state.data.filter((item) => item.id !== action.payload.id);
+                state.message = "Data deleted successfully.";
+            })
+            .addCase(deleteData.rejected, (state, action) => {
+                state.loading = false;
+                state.message = action.payload || "Failed to delete data.";
+            })
+           
     },
 });
 
