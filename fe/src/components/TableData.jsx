@@ -1,22 +1,111 @@
 import { useEffect } from "react";
 import Button from "./Button";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchData } from "../redux/CreateSlice";
+import { fetchData, deleteData, editData } from "../redux/CreateSlice";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
+const MySwal = withReactContent(Swal);
 
 const TableData = () => {
   const dispatch = useDispatch();
-  const {data} = useSelector((state) => state.user)
+  const { data, loading } = useSelector((state) => state.user);
 
-  console.log(data)
-  
   // Mengambil data saat komponen dimuat
   useEffect(() => {
     dispatch(fetchData());
   }, [dispatch]);
-  
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
+
+  const handleModalEdit = async (id, item) => {
+    const { value: formValues } = await MySwal.fire({
+      title: `Edit Data: ${item.reporterName}`,
+      html: `
+      <input id="swal-input-reporterName" class="swal2-input" placeholder="Nama Pelapor" value="${
+        item.reporterName || ""
+      }">
+      <input id="swal-input-disasterType" class="swal2-input" placeholder="Jenis Bencana" value="${
+        item.disasterType || ""
+      }">
+      <input id="swal-input-location" class="swal2-input" placeholder="Lokasi" value="${
+        item.location || ""
+      }">
+      <input id="swal-input-date" type="date" class="swal2-input" placeholder="Tanggal Kejadian" value="${new Date(
+        item.date
+      ).toISOString()}">
+      <textarea id="swal-input-description" class="swal2-textarea" placeholder="Deskripsi">${
+        item.description || ""
+      }</textarea>
+    `,
+      focusConfirm: false,
+      preConfirm: () => {
+        const reporterName = document
+          .getElementById("swal-input-reporterName")
+          .value.trim();
+        const disasterType = document
+          .getElementById("swal-input-disasterType")
+          .value.trim();
+        const location = document
+          .getElementById("swal-input-location")
+          .value.trim();
+        const date = document.getElementById("swal-input-date").value;
+        const description = document
+          .getElementById("swal-input-description")
+          .value.trim();
+
+        if (
+          !reporterName ||
+          !disasterType ||
+          !location ||
+          !date ||
+          !description
+        ) {
+          MySwal.showValidationMessage("Semua field harus diisi!");
+          return null;
+        }
+
+        return { reporterName, disasterType, location, date, description };
+      },
+    });
+
+    if (formValues) {
+      try {
+        await dispatch(editData({ id, updatedData: formValues })).unwrap();
+        Swal.fire("Berhasil!", "Data berhasil diperbarui.", "success");
+      } catch (error) {
+        Swal.fire("Gagal!", error.message || "Terjadi kesalahan.", "error");
+      }
+    }
+  };
+
+  const handleDelete = async (id) => {
+    const result = await Swal.fire({
+      title: "Apakah Anda yakin?",
+      text: "Data yang dihapus tidak dapat dikembalikan!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, hapus!",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await dispatch(deleteData(id)).unwrap();
+        Swal.fire("Berhasil!", "Data berhasil dihapus.", "success");
+        window.location.reload();
+      } catch (error) {
+        Swal.fire(
+          "Gagal!",
+          error.message || "Terjadi kesalahan saat menghapus data.",
+          "error"
+        );
+      }
+    }
+  };
+
+  if (loading) {
+    return <div className="text-center">Memuat data...</div>;
+  }
 
   return (
     <div className="overflow-x-auto">
@@ -70,7 +159,7 @@ const TableData = () => {
                   <Button
                     variant="secondary"
                     type="button"
-                    onClick={() => handleEdit(item)}>
+                    onClick={() => handleModalEdit(item.id, item)}>
                     Edit
                   </Button>
                   <Button
@@ -87,17 +176,6 @@ const TableData = () => {
       </table>
     </div>
   );
-
-  // Placeholder functions untuk Edit dan Hapus
-  function handleEdit(item) {
-    console.log("Edit item:", item);
-    // Tambahkan logika untuk edit di sini
-  }
-
-  function handleDelete(id) {
-    console.log("Hapus item dengan ID:", id);
-    // Tambahkan logika untuk hapus di sini
-  }
 };
 
 export default TableData;

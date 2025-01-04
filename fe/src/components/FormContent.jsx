@@ -44,20 +44,9 @@ const FormContent = () => {
     }
   };
 
+  
 
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await axiosInstance.get("/disasters");
-  //     setFormData(response.data); // Sesuaikan struktur data
-  //     dispatch(setData(response.data))
-  //     console.log(data);
-  //   } catch (err) {
-  //     console.log(err);
-  //     setError("Failed to fetch data");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+
 
   return (
     <div className="flex justify-center items-center">
