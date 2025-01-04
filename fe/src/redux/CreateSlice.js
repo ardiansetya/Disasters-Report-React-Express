@@ -71,6 +71,8 @@ export const editData = createAsyncThunk("user/editData", async ({ id, formData 
         const response = await axiosInstance.put(`/disasters/${id}`, formattedData);
         return response.data;
     } catch (err) {
+        console.log(err)
+
         return rejectWithValue(
             err.response?.data?.message || "Failed to edit data."
         );

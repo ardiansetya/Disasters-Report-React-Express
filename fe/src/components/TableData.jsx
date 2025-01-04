@@ -16,10 +16,12 @@ const TableData = () => {
     dispatch(fetchData());
   }, [dispatch]);
 
-  const handleModalEdit = async (id, item) => {
-    const { value: formValues } = await MySwal.fire({
-      title: `Edit Data: ${item.reporterName}`,
-      html: `
+ const handleModalEdit = async (id, item) => {
+   console.log("Item data:", item);
+
+   const { value: formValues } = await MySwal.fire({
+     title: `Edit Data: ${item.reporterName}`,
+     html: `
       <input id="swal-input-reporterName" class="swal2-input" placeholder="Nama Pelapor" value="${
         item.reporterName || ""
       }">
@@ -29,53 +31,57 @@ const TableData = () => {
       <input id="swal-input-location" class="swal2-input" placeholder="Lokasi" value="${
         item.location || ""
       }">
-      <input id="swal-input-date" type="date" class="swal2-input" placeholder="Tanggal Kejadian" value="${new Date(
-        item.date
-      ).toISOString()}">
+      <input id="swal-input-date" type="date" class="swal2-input" placeholder="Tanggal Kejadian" value="${
+        item.date ? new Date(item.date).toISOString().split("T")[0] : ""
+      }">
       <textarea id="swal-input-description" class="swal2-textarea" placeholder="Deskripsi">${
         item.description || ""
       }</textarea>
     `,
-      focusConfirm: false,
-      preConfirm: () => {
-        const reporterName = document
-          .getElementById("swal-input-reporterName")
-          .value.trim();
-        const disasterType = document
-          .getElementById("swal-input-disasterType")
-          .value.trim();
-        const location = document
-          .getElementById("swal-input-location")
-          .value.trim();
-        const date = document.getElementById("swal-input-date").value;
-        const description = document
-          .getElementById("swal-input-description")
-          .value.trim();
+     focusConfirm: false,
+     preConfirm: () => {
+       const reporterName = document
+         .getElementById("swal-input-reporterName")
+         .value.trim();
+       const disasterType = document
+         .getElementById("swal-input-disasterType")
+         .value.trim();
+       const location = document
+         .getElementById("swal-input-location")
+         .value.trim();
+       const date = document.getElementById("swal-input-date").value;
+       const description = document
+         .getElementById("swal-input-description")
+         .value.trim();
 
-        if (
-          !reporterName ||
-          !disasterType ||
-          !location ||
-          !date ||
-          !description
-        ) {
-          MySwal.showValidationMessage("Semua field harus diisi!");
-          return null;
-        }
+       if (
+         !reporterName ||
+         !disasterType ||
+         !location ||
+         !date ||
+         !description
+       ) {
+         MySwal.showValidationMessage("Semua field harus diisi!");
+         return null;
+       }
 
-        return { reporterName, disasterType, location, date, description };
-      },
-    });
+       return { reporterName, disasterType, location, date, description };
+     },
+   });
 
-    if (formValues) {
-      try {
-        await dispatch(editData({ id, updatedData: formValues })).unwrap();
-        Swal.fire("Berhasil!", "Data berhasil diperbarui.", "success");
-      } catch (error) {
-        Swal.fire("Gagal!", error.message || "Terjadi kesalahan.", "error");
-      }
-    }
-  };
+   console.log("Form values:", formValues);
+
+   if (formValues) {
+     try {
+       await dispatch(editData({ id, formData: formValues })).unwrap();
+       Swal.fire("Berhasil!", "Data berhasil diperbarui.", "success");
+       window.location.reload();
+     } catch (error) {
+       Swal.fire("Gagal!", error.message || "Terjadi kesalahan.", "error");
+     }
+   }
+ };
+
 
   const handleDelete = async (id) => {
     const result = await Swal.fire({
