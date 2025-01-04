@@ -1,21 +1,20 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/CreateSlice.js";
-import Button from "./Button";
-import axiosInstance from "../axios/AxiosInstance";
+import Button from "./Button.jsx";
 import { Link, useNavigate } from "react-router-dom";
 
-const FormAuth = ({ formTitle, formDesc }) => {
+const FormLoginAuth = ({ formTitle, formDesc }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { user, message, loading, token } = useSelector((state) => state.user);
+  console.log(user);
+  console.log(token);
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,63 +25,18 @@ const FormAuth = ({ formTitle, formDesc }) => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-
     try {
-      const response = await axiosInstance.post("/login", formData);
-      const { user, token } = response.data;
-
-      // Simpan token dan data user ke dalam Redux state (di memory)
-      dispatch(login({ user, token }));
-
-      // Simpan token ke dalam localStorage
-      localStorage.setItem("authToken", token);
-
-      // Jika login berhasil, reset form
-      setFormData({
-        email: "",
-        password: "",
-      });
-
-      // Redirect ke halaman dashboard setelah berhasil login
+      e.preventDefault();
+      dispatch(login(formData));
+      if (token) {
+        localStorage.setItem("authToken", token);
+      }
       navigate("/dashboard");
-
-      console.log("Login successful:", response.data);
-    } catch (err) {
-      console.error(
-        "Login failed:",
-        err.response?.data?.message || err.message
-      );
-      setError(
-        err.response?.data?.message || "Login failed. Please try again."
-      );
-    } finally {
-      setLoading(false);
+    } catch (error) {
+      console.log(error);
     }
-  };
 
-  const pLoginRegister = (formTitle) => {
-    if (formTitle === "Welcome!") {
-      return (
-        <p className="text-center text-sm">
-          Don&apos;t have an account?{" "}
-          <Link to="/register" className="hover:text-blue-600 font-bold">
-            Register Here!
-          </Link>
-        </p>
-      );
-    } else if (formTitle === "Welcome Back!") {
-      return (
-        <p className="text-center text-sm">
-          Already have an account?{" "}
-          <Link to="/login" className="hover:text-blue-600 font-bold">
-            Login Here!
-          </Link>
-        </p>
-      );
-    }
+   
   };
 
   return (
@@ -93,7 +47,22 @@ const FormAuth = ({ formTitle, formDesc }) => {
         <h1 className="text-3xl font-bold text-blue-600">{formTitle}</h1>
         <p className="text-sm from-neutral-400">{formDesc}</p>
       </div>
-      {error && <p className="text-red-600 text-sm">{error}</p>}
+      {message && <p className="text-red-600 text-sm">{message}</p>}
+      {formTitle === "Welcome!" && (
+        <div className="flex flex-col gap-2">
+          <label className="font-bold" htmlFor="email">
+            name
+          </label>
+          <input
+            className="px-4 py-2 outline-none rounded-md ring-2 focus:ring-2 focus:ring-blue-600"
+            type="name"
+            name="name"
+            placeholder="Enter your name here"
+            value={formData.name}
+            onChange={handleChange}
+          />
+        </div>
+      )}
       <div className="flex flex-col gap-2">
         <label className="font-bold" htmlFor="email">
           Email
@@ -121,8 +90,12 @@ const FormAuth = ({ formTitle, formDesc }) => {
         />
       </div>
 
-      {pLoginRegister(formTitle)}
-
+      <p className="text-center text-sm">
+        Don&apos;t have an account?{" "}
+        <Link to="/register" className="hover:text-blue-600 font-bold">
+          Register Here!
+        </Link>
+      </p>
       <Button type="submit" variant="primary" disabled={loading}>
         {loading ? "Logging in..." : "Login"}
       </Button>
@@ -130,4 +103,4 @@ const FormAuth = ({ formTitle, formDesc }) => {
   );
 };
 
-export default FormAuth;
+export default FormLoginAuth;

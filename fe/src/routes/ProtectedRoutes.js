@@ -9,7 +9,7 @@ const ProtectedRoutes = ({ children }) => {
 
     useEffect(() => {
         // Set loading to false once token is checked
-        if (token === null || token === undefined || !authToken) {
+        if (token === null || token === undefined || !authToken || authToken === null || authToken === undefined) {
             navigate("/login");
         } 
     }, [token, navigate, authToken]);

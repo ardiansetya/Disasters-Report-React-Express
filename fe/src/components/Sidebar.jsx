@@ -8,7 +8,7 @@ const Sidebar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
-    navigate("/");
+    navigate("/login");
   };
   return (
     <aside className=" w-64 min-h-screen  bg-slate-500 text-white flex flex-col rounded-br-xl">

@@ -13,7 +13,7 @@ const FormContent = () => {
     location: "",
     disasterType: "",
     description: "",
-    date: "",
+    date: "", 
   });
 
   const [loading, setLoading] = useState(false);
@@ -43,7 +43,6 @@ const FormContent = () => {
      
       console.log(data)
 
-      // Reset form after successful submission
       setFormData({
         reporterName: "",
         location: "",
