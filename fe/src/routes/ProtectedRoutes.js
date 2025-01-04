@@ -4,11 +4,11 @@ import { useNavigate } from "react-router-dom";
 
 const ProtectedRoutes = ({ children }) => {
     const navigate = useNavigate();
-    const { token } = useSelector((state) => state.user);
+    const token = useSelector((state) => state.user);
 
     useEffect(() => {
         // Set loading to false once token is checked
-        if (token === null) {
+        if (token === null || token === undefined || !token) {
             navigate("/login");
         } 
     }, [token, navigate]);

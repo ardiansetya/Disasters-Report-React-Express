@@ -1,27 +1,32 @@
 import { useEffect, useState } from "react";
-import axiosInstance from "../axios/AxiosInstance"; // Pastikan path ke axiosInstance sesuai
+import axiosInstance from "../axios/AxiosInstance";
 import Button from "./Button";
+import { useDispatch, useSelector } from "react-redux";
+import { setData } from "../redux/CreateSlice";
 
 const TableData = () => {
-  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.user.data) || []; 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosInstance.get("/disasters"); // Ganti dengan endpoint yang sesuai
-        setData(response.data); // Sesuaikan struktur data
+        const response = await axiosInstance.get("/disasters");
+        dispatch(setData(response.data.data));
       } catch (err) {
-        console.log(err);
-        setError("Failed to fetch data");
+        const errorMessage =
+          err.response?.data?.message || "Failed to fetch data.";
+        setError(errorMessage);
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, []);
+  }, [dispatch]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div className="text-red-600">{error}</div>;
@@ -55,10 +60,12 @@ const TableData = () => {
           </tr>
         </thead>
         <tbody>
-          {data.data.map((item, index) => (
+          {data.map((item, index) => (
             <tr key={item.id} className="border-b hover:bg-gray-50">
               <td className="py-2 px-4 text-sm text-gray-800">{index + 1}</td>
-              <td className="py-2 px-4 text-sm text-gray-800">{item.reporterName}</td>
+              <td className="py-2 px-4 text-sm text-gray-800">
+                {item.reporterName}
+              </td>
               <td className="py-2 px-4 text-sm text-gray-800">
                 {item.disasterType}
               </td>
@@ -73,10 +80,16 @@ const TableData = () => {
               </td>
               <td className="py-2 px-4 text-sm text-gray-800">
                 <div className="flex gap-2">
-                  <Button variant="secondary" type="button">
+                  <Button
+                    variant="secondary"
+                    type="button"
+                    onClick={() => handleEdit(item)}>
                     Edit
                   </Button>
-                  <Button variant="danger" type="button">
+                  <Button
+                    variant="danger"
+                    type="button"
+                    onClick={() => handleDelete(item.id)}>
                     Hapus
                   </Button>
                 </div>
@@ -87,6 +100,17 @@ const TableData = () => {
       </table>
     </div>
   );
+
+  // Placeholder functions untuk Edit dan Hapus
+  function handleEdit(item) {
+    console.log("Edit item:", item);
+    // Tambahkan logika untuk edit di sini
+  }
+
+  function handleDelete(id) {
+    console.log("Hapus item dengan ID:", id);
+    // Tambahkan logika untuk hapus di sini
+  }
 };
 
 export default TableData;

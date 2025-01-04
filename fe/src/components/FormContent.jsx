@@ -1,8 +1,13 @@
 import {   useState } from "react";
 import axiosInstance from "../axios/AxiosInstance";
 import Button from "./Button";
+import { useDispatch, useSelector } from "react-redux";
+import {setData} from "../redux/CreateSlice"
 
 const FormContent = () => {
+  const {data} = useSelector((state) => state.user)
+  
+  const dispatch = useDispatch()
   const [formData, setFormData] = useState({
     reporterName: "",
     location: "",
@@ -35,6 +40,7 @@ const FormContent = () => {
 
       const response = await axiosInstance.post("/disasters", formatedData);
       const data = response.data;
+     
       console.log(data)
 
       // Reset form after successful submission
@@ -62,8 +68,10 @@ const FormContent = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axiosInstance.get("/disasters"); // Ganti dengan endpoint yang sesuai
+      const response = await axiosInstance.get("/disasters"); 
       setFormData(response.data); // Sesuaikan struktur data
+      dispatch(setData(response.data))
+      console.log(data);
     } catch (err) {
       console.log(err);
       setError("Failed to fetch data");

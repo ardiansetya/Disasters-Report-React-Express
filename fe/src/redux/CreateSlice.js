@@ -16,6 +16,9 @@ export const UserSlice = createSlice({
             state.token = action.payload.token;
             console.log(state.token)
         },
+        setData: (state, action) => {
+            state.data = action.payload;
+        },
         logout: (state) => {
             state.user = null;
             state.token = null;
@@ -23,4 +26,4 @@ export const UserSlice = createSlice({
     },
 })
 
-export const { login, logout } = UserSlice.actions
+export const { login, logout, setData } = UserSlice.actions

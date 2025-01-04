@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../redux/CreateSlice.js";
 import Button from "./Button";
 import axiosInstance from "../axios/AxiosInstance";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const FormAuth = ({ formTitle, formDesc }) => {
   const navigate = useNavigate();
@@ -48,6 +48,7 @@ const FormAuth = ({ formTitle, formDesc }) => {
 
       // Redirect ke halaman dashboard setelah berhasil login
       navigate("/dashboard");
+
       console.log("Login successful:", response.data);
     } catch (err) {
       console.error(
@@ -66,19 +67,19 @@ const FormAuth = ({ formTitle, formDesc }) => {
     if (formTitle === "Welcome!") {
       return (
         <p className="text-center text-sm">
-          Don't have an account?{" "}
-          <a href="/register" className="hover:text-blue-600 font-bold">
+          Don&apos;t have an account?{" "}
+          <Link to="/register" className="hover:text-blue-600 font-bold">
             Register Here!
-          </a>
+          </Link>
         </p>
       );
     } else if (formTitle === "Welcome Back!") {
       return (
         <p className="text-center text-sm">
           Already have an account?{" "}
-          <a href="/login" className="hover:text-blue-600 font-bold">
+          <Link to="/login" className="hover:text-blue-600 font-bold">
             Login Here!
-          </a>
+          </Link>
         </p>
       );
     }
