@@ -5,13 +5,14 @@ import { useNavigate } from "react-router-dom";
 const ProtectedRoutes = ({ children }) => {
     const navigate = useNavigate();
     const token = useSelector((state) => state.user);
+    const authToken = localStorage.getItem("authToken");
 
     useEffect(() => {
         // Set loading to false once token is checked
-        if (token === null || token === undefined || !token) {
+        if (token === null || token === undefined || !authToken) {
             navigate("/login");
         } 
-    }, [token, navigate]);
+    }, [token, navigate, authToken]);
 
     return children;
 };

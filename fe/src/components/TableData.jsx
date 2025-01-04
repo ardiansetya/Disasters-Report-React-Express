@@ -1,35 +1,22 @@
-import { useEffect, useState } from "react";
-import axiosInstance from "../axios/AxiosInstance";
+import { useEffect } from "react";
 import Button from "./Button";
 import { useDispatch, useSelector } from "react-redux";
-import { setData } from "../redux/CreateSlice";
+import { fetchData } from "../redux/CreateSlice";
 
 const TableData = () => {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.user.data) || []; 
+  const {data} = useSelector((state) => state.user)
 
+  console.log(data)
+  
+  // Mengambil data saat komponen dimuat
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axiosInstance.get("/disasters");
-        dispatch(setData(response.data.data));
-      } catch (err) {
-        const errorMessage =
-          err.response?.data?.message || "Failed to fetch data.";
-        setError(errorMessage);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
+    dispatch(fetchData());
   }, [dispatch]);
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div className="text-red-600">{error}</div>;
+  
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
 
   return (
     <div className="overflow-x-auto">
