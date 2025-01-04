@@ -3,6 +3,7 @@ import { configDotenv } from "dotenv";
 import authRouter from "./auth/auth.controller.js"
 import bencanaRouter from "./bencana/bencana.controller.js"
 import cors from "cors"
+import cookieParser from "cookie-parser";
 
 configDotenv();
 
@@ -12,11 +13,10 @@ const port = process.env.PORT || 3000;
 
 const app = express();
 app.use(express.json());
-
+app.use(cookieParser())
 app.use(cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173", // Ganti dengan URL frontend Anda
-    methods: ["GET", "POST", "PUT", "DELETE"], // Metode HTTP yang diizinkan
-    allowedHeaders: ["Content-Type", "Authorization"], // Header yang diizinkan
+    origin: process.env.CLIENT_URL || "http://localhost:5173", 
+    credentials: true
 }));
 
 // Endpoint root

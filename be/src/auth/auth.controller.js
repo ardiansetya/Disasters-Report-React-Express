@@ -3,14 +3,10 @@ import { Router } from "express";
 import jwt from "jsonwebtoken";
 import validator from "validator";
 import { configDotenv } from "dotenv";
-import cookieParser from "cookie-parser";
 import { prisma } from "../db/index.js";
 
 configDotenv();
 const router = Router();
-
-// Middleware cookie-parser
-router.use(cookieParser());
 
 // Login
 router.post("/login", async (req, res) => {
