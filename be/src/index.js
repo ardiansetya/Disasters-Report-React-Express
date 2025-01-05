@@ -20,7 +20,7 @@ app.use(cors({
 
 // Endpoint root
 app.get('/', (req, res) => {
-    res.send('Hello from Express.js on Vercel!');
+    res.send('Hello from Express.js on Railway!');
 });
 
 app.use('/api', authRouter);
