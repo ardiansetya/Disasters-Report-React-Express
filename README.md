@@ -58,7 +58,51 @@ Berikut adalah dokumentasi untuk GitHub proyek Anda dengan menggunakan ikon untu
 
 ## Endpoints API 📡
 
-- **POST** `/disasters`: Melaporkan bencana
+## Auth
+
+- **POST** `/api/register`: Register
+  - Request body:
+    ```json
+    {
+       "name": "michelle",
+       "email": "michelle@gmail.com",
+       "password": "12345678"
+    }
+    ```
+  - Response:
+    ```json
+    {
+       "user": {
+          "id": 1,
+          "name": "michelle",
+          "email": "michelle@gmail.com"
+        },
+     "message": "Register successful"
+    }
+    ```
+- **POST** `/api/login`: Login
+  - Request body:
+    ```json
+    {
+     "email": "michelle@gmail.com",
+     "password": "12345678"
+    }
+    ```
+  - Response:
+    ```json
+    {
+    "user": {
+       "id": 1,
+       "name": "michelle",
+       "email": "michelle@gmail.com"
+     },
+     "token": "Your Token",
+     "message": "Login successful"
+    }
+    ```
+## CRUD
+
+- **POST** `/api/disasters`: Melaporkan bencana
   - Request body:
     ```json
     {
@@ -73,7 +117,7 @@ Berikut adalah dokumentasi untuk GitHub proyek Anda dengan menggunakan ikon untu
     ```json
     {
       "status": "success"
-      "message": "Bencana berhasil dilaporkan",
+      "message": "Disasters created successfully",
       "data": {
       "reporterName": "Nama Pelapor",
       "location": "Lokasi Kejadian",
@@ -84,12 +128,47 @@ Berikut adalah dokumentasi untuk GitHub proyek Anda dengan menggunakan ikon untu
     }
     ```
 
-- **GET** `/disasters`: Mengambil semua data bencana yang sudah dilaporkan
+- **GET** `/api/disasters`: Mengambil semua data bencana yang sudah dilaporkan
   - Response:
     ```json
     {
     "status": "success"
-    "message": "Bencana berhasil dilaporkan",
+    "message": "Disasters retrieved successfully",
+    "data": [
+        {
+        "reporterName": "Nama Pelapor",
+        "location": "Lokasi Kejadian",
+        "disasterType": "Jenis Bencana",
+        "description": "Deskripsi Kejadian",
+        "date": "Tanggal Kejadian"
+        },
+      ]
+    }
+    ```
+
+- **PUT** `/api/disasters/:id`: Edit semua data bencana yang sudah dilaporkan
+  - Response:
+    ```json
+    {
+    "status": "success"
+    "message": "Disasters edited successfully",
+    "data": [
+        {
+        "reporterName": "Nama Pelapor",
+        "location": "Lokasi Kejadian",
+        "disasterType": "Jenis Bencana",
+        "description": "Deskripsi Kejadian",
+        "date": "Tanggal Kejadian"
+        },
+      ]
+    }
+    ```
+- **DELETE** `/api/disasters/:id`: Edit semua data bencana yang sudah dilaporkan
+  - Response:
+    ```json
+    {
+    "status": "success"
+    "message": "Disaster deleted successfully",
     "data": [
         {
         "reporterName": "Nama Pelapor",
