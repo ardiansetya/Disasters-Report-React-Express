@@ -7,7 +7,7 @@ import { register } from "../redux/CreateSlice.js";
 const FormRegisterAuth = ({ formTitle, formDesc }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user, loading, message } = useSelector((state) => state.user);
+  const { user, loading } = useSelector((state) => state.user);
   console.log(user);
 
   const [formData, setFormData] = useState({
