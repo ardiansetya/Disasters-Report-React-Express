@@ -5,8 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/index.js",
-    "build": "prisma generate ",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "vercel-build": "prisma generate && prisma migrate deploy",
+    "start": "node server.js",
+    "migrate:dev": "prisma migrate dev",
+    "migrate:deploy": "prisma migrate deploy",
+    "migrate:status": "prisma migrate status",
+    "generate": "prisma generate"
   },
   "keywords": [],
   "author": "",
