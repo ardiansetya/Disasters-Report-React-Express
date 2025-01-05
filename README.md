@@ -77,7 +77,6 @@ Berikut adalah dokumentasi untuk GitHub proyek Anda dengan menggunakan ikon untu
           "name": "michelle",
           "email": "michelle@gmail.com"
         },
-     "token": "Your Token",
      "message": "Register successful"
     }
     ```
