@@ -3,12 +3,14 @@ import { configDotenv } from "dotenv";
 import authRouter from "./auth/auth.controller.js"
 import bencanaRouter from "./bencana/bencana.controller.js"
 import cors from "cors"
+import helmet from "helmet";
 import cookieParser from "cookie-parser";
 
 configDotenv();
 const port = process.env.PORT || 3000;
 
 const app = express();
+app.use(helmet());
 app.use(express.json());
 app.use(cookieParser())
 app.use(cors({
