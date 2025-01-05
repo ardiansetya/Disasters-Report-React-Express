@@ -7,9 +7,8 @@ import { Link, useNavigate } from "react-router-dom";
 const FormLoginAuth = ({ formTitle, formDesc }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user, message, loading, token } = useSelector((state) => state.user);
-  console.log(user);
-  console.log(token);
+  const {  loading, } = useSelector((state) => state.user);
+
 
   const [formData, setFormData] = useState({
     email: "",
@@ -47,7 +46,6 @@ const FormLoginAuth = ({ formTitle, formDesc }) => {
         <h1 className="text-3xl font-bold text-blue-600">{formTitle}</h1>
         <p className="text-sm from-neutral-400">{formDesc}</p>
       </div>
-      {message && <p className="text-red-600 text-sm">{message}</p>}
       {formTitle === "Welcome!" && (
         <div className="flex flex-col gap-2">
           <label className="font-bold" htmlFor="email">

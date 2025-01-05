@@ -37,7 +37,6 @@ const FormContent = () => {
       });
 
       console.log("Data Created successfully:", data);
-      window.location.reload();
     } catch (err) {
       console.error("Error:", err.response?.data?.message || err.message);
       

@@ -54,6 +54,7 @@ export const postData = createAsyncThunk("user/postData", async (formData, { rej
             date: new Date(formData.date).toISOString(),
         };
         const response = await axiosInstance.post("/disasters", formattedData);
+        console.log(response.data);
         return response.data;
     } catch (err) {
         return rejectWithValue(

@@ -75,7 +75,6 @@ const TableData = () => {
      try {
        await dispatch(editData({ id, formData: formValues })).unwrap();
        Swal.fire("Berhasil!", "Data berhasil diperbarui.", "success");
-       window.location.reload();
      } catch (error) {
        Swal.fire("Gagal!", error.message || "Terjadi kesalahan.", "error");
      }
@@ -98,7 +97,6 @@ const TableData = () => {
       try {
         await dispatch(deleteData(id)).unwrap();
         Swal.fire("Berhasil!", "Data berhasil dihapus.", "success");
-        window.location.reload();
       } catch (error) {
         Swal.fire(
           "Gagal!",
