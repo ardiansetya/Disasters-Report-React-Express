@@ -30,13 +30,13 @@ Berikut adalah dokumentasi untuk GitHub proyek Anda dengan menggunakan ikon untu
 
    - Untuk **frontend**:
      ```bash
-     cd frontend
+     cd fe
      npm install
      ```
 
    - Untuk **backend**:
      ```bash
-     cd backend
+     cd be
      npm install
      ```
 
