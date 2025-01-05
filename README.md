@@ -87,7 +87,7 @@ Berikut adalah dokumentasi untuk GitHub proyek Anda dengan menggunakan ikon untu
     {
      "email": "michelle@gmail.com",
      "password": "12345678"
-   }
+    }
     ```
   - Response:
     ```json
