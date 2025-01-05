@@ -1,3 +1,14 @@
 node_modules
 # Keep environment variables out of version control
 .env
+
+#testing
+/coverage
+
+#production
+/build
+/dist
+
+#misc
+DS_Store
+.package-lock.json

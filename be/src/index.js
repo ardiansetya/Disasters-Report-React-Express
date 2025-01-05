@@ -17,14 +17,14 @@ app.use(cors({
 }));
 
 // Endpoint root
-app.get("/", (req, res) => {
-    res.send("Hello World!");
+app.get('/', (req, res) => {
+    res.send('Hello from Express.js on Vercel!');
 });
 
 app.use('/api', authRouter);
 app.use('/api', bencanaRouter);
 
-// Jalankan server
+
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
