@@ -12,7 +12,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://api-disasters-reports.vercel.app/api/',
+        target: 'https://api-disasters-reports.vercel.app/',
         changeOrigin: true,
       },
     },
