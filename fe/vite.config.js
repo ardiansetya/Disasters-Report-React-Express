@@ -8,7 +8,13 @@ dotenv.config();
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  define: {
-    'process.env.VITE_BASE_URL_API': JSON.stringify(process.env.VITE_BASE_URL_API),
-  },
+ 
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://api-disasters-reports.vercel.app/',
+        changeOrigin: true,
+      },
+    },
+  }
 });
