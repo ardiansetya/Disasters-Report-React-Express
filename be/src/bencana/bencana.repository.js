@@ -3,10 +3,10 @@ import { prisma } from "../db/index.js"
 export const getAllData = async (userId) => {
     return await prisma.report.findMany({
         where: {
-            userId // Menjelaskan secara eksplisit field yang digunakan
+            userId 
         },
         orderBy: {
-            createdAt: 'desc' // Tambahkan pengurutan berdasarkan waktu pembuatan
+            createdAt: 'desc'
         }
     });
 }
