@@ -50,7 +50,6 @@ const FormContent = () => {
   return (
     <div className="flex justify-center items-center">
       <form onSubmit={handleSubmit} className="w-full max-w-5xl bg-white p-6">
-        {/* Nama Pelapor */}
         <div className="flex gap-2 items-center">
           <div className="mb-4">
             <label

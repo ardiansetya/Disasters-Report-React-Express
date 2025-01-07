@@ -48,7 +48,7 @@ const FormLoginAuth = ({ formTitle, formDesc }) => {
       </div>
       {formTitle === "Welcome!" && (
         <div className="flex flex-col gap-2">
-          <label className="font-bold" htmlFor="email">
+          <label className="font-bold" htmlFor="name">
             name
           </label>
           <input

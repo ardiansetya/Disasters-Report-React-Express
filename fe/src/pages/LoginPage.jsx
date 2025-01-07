@@ -8,6 +8,7 @@ const LoginPage = () => {
         formTitle={"Welcome Back!"}
         formDesc={"Login to your account"}
       />
+
     </AuthLayout>
   );
 };
